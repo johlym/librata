@@ -12,7 +12,7 @@ Ensure Postgres and Redis are running and run `bin/setup` to configure the appli
 
 ## Run
 
-Run the app with `bin/run`. Optionally, if you have the Heroku CLI installed, run `heroku local`.
+Run the app with `bin/run`. Optionally, if you have the Heroku CLI installed, run `foreman start`.
 
 Optionally use `LOGRAGE_IN_DEVELOPMENT=true bin/run` to have cleaner production logs in your development environment.
 

@@ -84,6 +84,9 @@ def setup
   log 'Restarting the app server'
   system! 'bin/rails restart'
 
+  log 'Installing Foreman'
+  system! 'gem install foreman'
+
   log 'We\'re all set!' 
   log ''
   log 'For a list of commands, run:'
