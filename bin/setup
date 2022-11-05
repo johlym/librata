@@ -6,66 +6,62 @@ require 'io/console'
 APP_ROOT = File.expand_path('..', __dir__)
 
 def system!(*args)
-  log "Executing #{args}" 
+  log "\s\sExecuting #{args}" 
   if system(*args)
-    log "#{args} succeeded" 
+    log :success, "\s\s#{args} succeeded" 
   else
-    log "#{args} failed"
+    log :error, "\s\s#{args} failed"
     abort
   end 
 end
 
 def log(level = :info, msg)
   c = case level
-  when :info
-    '32'
+  when :success
+    '38:5:82'
   when :warn
     '38:5:208'
   when :error
     '31'
   when :debug
     '36'
+  when :info
+    '38:5:44'
   end
 
   puts "\e[#{c}m[ bin/setup ]\e[0m #{msg}"
 end
 
 def help
-  log :help, '=== Things you might find helpful:'
-  log :help, ''
-  log :help, '  bin/setup'
-  log :help, '      # set up the application'
-  log :help, ''
-  log :help, '  bin/ci'
-  log :help, '      # test the application in CI fashion'
-  log :help, ''
-  log :help, '  bin/rails test'
-  log :help, '      # runs non-system tests'
-  log :help, ''
-  log :help, '  bin/rails test:system'
-  log :help, '      # runs system tests'
-  log :help, ''
-  log :help, '  bin/lint'
-  log :help, '      # runs Rubocop to lint application code'
-  log :help, ''
-  log :help, '  bin/run'
-  log :help, '      # starts the local development server'
-  log :help, '      # prepend with LOGRAGE_IN_DEVELOPMENT=true for production'
-  log :help, '          logging in development'
-  log :help, ''
-  log :help, '  bin/scan'
-  log :help, '      # runs Brakeman to check for vulnerabilities'
-  log :help, ''
+  log '=== Things you might find helpful:'
+  log ''
+  log '  bin/setup'
+  log '      # set up the application'
+  log ''
+  log '  bin/ci'
+  log '      # test the application in CI fashion'
+  log ''
+  log '  bin/rails test'
+  log '      # runs non-system tests'
+  log ''
+  log '  bin/rails test:system'
+  log '      # runs system tests'
+  log ''
+  log '  bin/lint'
+  log '      # runs Rubocop to lint application code'
+  log ''
+  log '  bin/run'
+  log '      # starts the local development server'
+  log '      # prepend with LOGRAGE_IN_DEVELOPMENT=true for production'
+  log '          logging in development'
+  log ''
+  log '  bin/scan'
+  log '      # runs Brakeman to check for vulnerabilities'
+  log ''
   
 end
 
-def setup
-  log :warn, 'This may reset your application. Are you sure? (Y/n)'
-  return if STDIN.getch == "n"
-  puts "\n"
-  log :warn, "...and so it shall be."
-  sleep 1
-  
+def setup  
   log 'Installing Bundler'
   system! 'gem install bundler --conservative'
 
@@ -84,10 +80,14 @@ def setup
   log 'Restarting the app server'
   system! 'bin/rails restart'
 
+  log 'Running yarn install'
+  system! 'yarn install'
+
   log 'Installing Foreman'
   system! 'gem install foreman'
 
-  log 'We\'re all set!' 
+  log ''
+  log "We\'re all set!"
   log ''
   log 'For a list of commands, run:'
   log ''
