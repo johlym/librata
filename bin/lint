@@ -1,5 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-set -e
+if ARGV[0] == "correct" 
+  system("bundle exec rubocop -A")
+else
+  system("bundle exec rubocop")
+end
 
-bundle exec rubocop
