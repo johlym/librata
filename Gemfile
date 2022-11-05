@@ -26,7 +26,6 @@ group :development, :test do
   gem "dotenv"
   gem "rubocop"
   gem "rubocop-rails", require: false
-  gem "rubocop-rspec", require: false
 end
 
 group :development do
@@ -36,8 +35,6 @@ end
 
 group :test do
   gem "capybara"
-  gem "rspec"
-  gem "rspec-rails"
   gem "selenium-webdriver"
   gem "webdrivers"
 end
