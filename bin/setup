@@ -6,7 +6,13 @@ require 'io/console'
 APP_ROOT = File.expand_path('..', __dir__)
 
 def system!(*args)
-  system(*args) || abort("\n== Command #{args} failed ==")
+  log "Executing #{args}" 
+  if system(*args)
+    log "#{args} succeeded" 
+  else
+    log "#{args} failed"
+    abort
+  end 
 end
 
 def log(level = :info, msg)
@@ -21,18 +27,38 @@ def log(level = :info, msg)
     '36'
   end
 
-  puts "\e[#{c}m[ bin/setup ] #{msg}\e[0m"
+  puts "\e[#{c}m[ bin/setup ]\e[0m #{msg}"
 end
 
-FileUtils.chdir APP_ROOT do
-  # This script is a way to set up or update your development environment automatically.
-  # This script is idempotent, so that you can run it at any time and get an expectable outcome.
-  # Add necessary setup steps to this file.
+def help
+  log :help, '=== Things you might find helpful:'
+  log :help, ''
+  log :help, '  bin/setup'
+  log :help, '      # set up the application'
+  log :help, ''
+  log :help, '  bin/ci'
+  log :help, '      # test the application in CI fashion'
+  log :help, ''
+  log :help, '  bin/rails test'
+  log :help, '      # runs non-system tests'
+  log :help, ''
+  log :help, '  bin/rails test:system'
+  log :help, '      # runs system tests'
+  log :help, ''
+  log :help, '  bin/run'
+  log :help, '      # starts the local development server'
+  log :help, ''
+  log :help, '  bin/scan'
+  log :help, '      # runs Brakeman to check for vulnerabilities'
+  log :help, ''
+  
+end
 
-  log :warn, 'This may reset your application. Press ENTER to continue, any other key to quit'
-  return unless gets == "\n"
-
-  log :warn, '...and so it shall be.'
+def setup
+  log :warn, 'This may reset your application. Are you sure? (Y/n)'
+  return if STDIN.getch == "n"
+  puts "\n"
+  log :warn, "...and so it shall be."
   sleep 1
   
   log 'Installing Bundler'
@@ -41,7 +67,6 @@ FileUtils.chdir APP_ROOT do
   log 'Installing gems'
   system! 'bundle check || bundle install'
 
-  log :warn, 'test'
   log 'Dropping & recreating the development database'
   system! 'bin/rails db:reset || bin/rails db:migrate'
 
@@ -53,4 +78,17 @@ FileUtils.chdir APP_ROOT do
 
   log 'Restarting the app server'
   system! 'bin/rails restart'
+
+  log 'We\'re all set!' 
+  log ''
+  log 'For a list of commands, run:'
+  log ''
+  log '    bin/setup help'
+  log ''
+end
+
+if ARGV[0] == "help" 
+  help
+else
+  setup
 end
