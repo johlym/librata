@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+bin/test
+bin/rails test:system
+bundle exec brakeman -q -o tmp/brakeman.html
+bundle exec bundle audit check --update
