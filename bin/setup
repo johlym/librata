@@ -50,6 +50,8 @@ def help
   log :help, ''
   log :help, '  bin/run'
   log :help, '      # starts the local development server'
+  log :help, '      # prepend with LOGRAGE_IN_DEVELOPMENT=true for production'
+  log :help, '          logging in development'
   log :help, ''
   log :help, '  bin/scan'
   log :help, '      # runs Brakeman to check for vulnerabilities'
